@@ -1,0 +1,23 @@
+#! /bin/bash
+
+FOLDER=~/.local/share/torywatch
+
+error()
+{
+	zenity --error --no-wrap --text "$1"
+	exit 1
+}
+
+if [[ ! -d $FOLDER ]]
+then
+	error "Please symlink $FOLDER to the watched folder"
+fi
+
+for i in $@
+do
+	msg=$(cp "$i" "$FOLDER" 2>&1)
+	if [[ $? -ne 0 ]]
+	then
+		error "Error copying torrent:\n$msg"
+	fi
+done
